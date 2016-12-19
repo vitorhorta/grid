@@ -1,7 +1,8 @@
 import React, {Component} from 'react';
 import ReactDataGrid from 'react-data-grid';
 import './App.css';
-
+import ReactIntl from 'react-intl';
+import {IntlMixin, IntlProvider, FormattedMessage, FormattedNumber} from 'react-intl';
 //helper to generate a random date
 
 function randomDate(start, end) {
@@ -26,14 +27,14 @@ function createRows(numberOfRows) {
 }
 
 var PercentCompleteFormatter = React.createClass({
+    mixins: [IntlMixin],
     render: function () {
         if (!this.props.value) return (<div></div>);
-        var percentComplete = "R$ " + this.props.value;
+        var percentComplete = this.props.value;
 
         return (
-            <div>
-                {percentComplete}
-            </div>);
+
+            <FormattedNumber value={percentComplete} style="currency" currency="BRL"/>            );
     }
 });
 
@@ -121,6 +122,7 @@ var Example = React.createClass({
 
     render: function () {
         return (
+            <IntlProvider locale="en">
             <ReactDataGrid
                 enableCellSelect={true}
                 columns={columns}
@@ -129,6 +131,7 @@ var Example = React.createClass({
                 rowsCount={this.state.rows.length}
                 minHeight={500}
                 onRowUpdated={this.handleRowUpdated}/>
+            </IntlProvider>
         )
     }
 
